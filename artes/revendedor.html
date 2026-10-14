@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Gelo Prime · Seja revendedor</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@500;600;700&display=block" rel="stylesheet">
+<style>
+  :root{
+    --ciano:#00d4ff;
+    --ciano-claro:#9ff0ff;
+    --azul:#1465ff;
+    --branco:#f4faff;
+    --suave:#b9d4f5;
+    --W:1080px; --H:1350px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:var(--W);height:var(--H);overflow:hidden;background:#041033}
+  html.story{--H:1920px}
+
+  .arte{position:relative;width:var(--W);height:var(--H);overflow:hidden;font-family:'Barlow',sans-serif;color:var(--branco)}
+  #cena{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+  /* névoa fria subindo do gelo */
+  .nevoa{position:absolute;left:0;right:0;bottom:0;height:46%;pointer-events:none;
+    background:
+      radial-gradient(60% 40% at 50% 100%, rgba(190,240,255,.20), transparent 70%),
+      linear-gradient(0deg, rgba(4,16,51,.0), rgba(4,16,51,0));}
+  #brilhos{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+  .conteudo{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:66px 80px 0}
+
+  .logo{position:relative;width:340px;height:340px;flex:none}
+  .logo::before{content:"";position:absolute;inset:-70px;border-radius:50%;
+    background:radial-gradient(circle, rgba(0,212,255,.35) 0%, rgba(20,101,255,.10) 48%, transparent 70%)}
+  .logo img{position:relative;width:100%;height:100%;display:block;border-radius:50%;
+    box-shadow:0 0 0 2px rgba(159,240,255,.55), 0 0 0 10px rgba(0,212,255,.10), 0 24px 70px rgba(0,0,0,.55)}
+
+  .kicker{margin-top:44px;display:flex;align-items:center;gap:18px;
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;letter-spacing:9px;text-transform:uppercase;color:var(--ciano-claro)}
+  .kicker::before,.kicker::after{content:"";width:56px;height:2px;background:linear-gradient(90deg,transparent,var(--ciano-claro))}
+  .kicker::after{transform:scaleX(-1)}
+
+  h1{margin-top:10px;text-align:center;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;line-height:.9}
+  h1 .l1{display:block;font-weight:800;font-size:84px;letter-spacing:1px;color:var(--branco);text-shadow:0 4px 30px rgba(0,0,0,.45)}
+  h1 .l2{display:block;font-weight:900;font-size:142px;margin-top:4px;letter-spacing:1px;
+    background:linear-gradient(180deg,#ffffff 0%, #b8f4ff 30%, var(--ciano) 62%, #2e86ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 28px rgba(0,212,255,.45)) drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+
+  .freezer{margin-top:40px;display:flex;align-items:center;gap:26px;padding:20px 40px 20px 20px;border-radius:999px;
+    background:linear-gradient(135deg, rgba(255,255,255,.16), rgba(160,225,255,.06));
+    border:1.5px solid rgba(175,235,255,.45);
+    -webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 20px 60px rgba(0,30,90,.55)}
+  .freezer .ico{width:86px;height:86px;border-radius:50%;flex:none;display:grid;place-items:center;
+    background:linear-gradient(160deg,#5fe3ff, var(--azul));box-shadow:0 6px 22px rgba(0,212,255,.5), inset 0 2px 0 rgba(255,255,255,.4)}
+  .freezer .ico svg{width:54px;height:54px}
+  .freezer p{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:52px;line-height:1;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+  .emoji{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;font-size:50px;margin-left:8px;vertical-align:-2px}
+
+  .cta{margin-top:26px;font-size:29px;font-weight:500;color:var(--suave);text-shadow:0 2px 12px rgba(0,0,0,.7), 0 0 30px rgba(3,11,40,.8)}
+  .cta b{font-weight:700;color:var(--branco)}
+
+  html.story .conteudo{padding-top:190px}
+  html.story .logo{width:430px;height:430px}
+  html.story .kicker{margin-top:70px;font-size:34px}
+  html.story h1 .l1{font-size:96px}
+  html.story h1 .l2{font-size:160px}
+  html.story .freezer{margin-top:60px}
+  html.story .cta{margin-top:34px;font-size:32px}
+
+  #erro{position:absolute;left:0;top:0;right:0;background:#c00;color:#fff;font:20px monospace;padding:10px;white-space:pre-wrap;z-index:9}
+</style>
+<script>if(location.hash==='#story')document.documentElement.classList.add('story')</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="arte">
+  <canvas id="cena"></canvas>
+  <div class="nevoa"></div>
+  <canvas id="brilhos"></canvas>
+
+  <div class="conteudo">
+    <div class="logo"><img src="fonte/logo-recortado.png" alt="Gelo Prime"></div>
+    <div class="kicker">Oportunidade</div>
+    <h1><span class="l1">Seja um revendedor</span><span class="l2">Gelo Prime!</span></h1>
+    <div class="freezer">
+      <span class="ico">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="24" width="50" height="30" rx="5"/><path d="M7 32h50M25 28h14M13 54v4M51 54v4"/>
+          <path d="M32 4v14M26 7l12 8M38 7l-12 8"/>
+        </svg>
+      </span>
+      <p>Nós fornecemos o freezer<span class="emoji">🥳</span></p>
+    </div>
+    <p class="cta"><b>Gelo em cubos</b> · chame a gente e saiba como revender</p>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+
+const erro = m => { const d=document.createElement('div'); d.id='erro'; d.textContent=m; document.body.appendChild(d); };
+window.addEventListener('error', e => erro(e.message));
+
+try {
+const story = document.documentElement.classList.contains('story');
+const W = 1080, H = story ? 1920 : 1350;
+
+// ---- aleatório determinístico: a arte sai igual toda vez
+let semente = 7;
+const rnd = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+const entre = (a,b) => a + (b-a)*rnd();
+
+// ---- ruído (value noise em oitavas)
+function ruido(N, oitavas=5){
+  const out = new Float32Array(N*N);
+  for(let o=0;o<oitavas;o++){
+    const g = 4<<o, amp = 1/(1<<o);
+    const grade = Array.from({length:(g+1)*(g+1)}, rnd);
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const fx=x/N*g, fy=y/N*g, ix=fx|0, iy=fy|0, tx=fx-ix, ty=fy-iy;
+      const sx=tx*tx*(3-2*tx), sy=ty*ty*(3-2*ty);
+      const a=grade[iy*(g+1)+ix], b=grade[iy*(g+1)+ix+1], c=grade[(iy+1)*(g+1)+ix], d=grade[(iy+1)*(g+1)+ix+1];
+      out[y*N+x] += amp*((a*(1-sx)+b*sx)*(1-sy)+(c*(1-sx)+d*sx)*sy);
+    }
+  }
+  return out;
+}
+function texturaNormal(N, forca){
+  const h = ruido(N, 6), cv = document.createElement('canvas'); cv.width=cv.height=N;
+  const ctx = cv.getContext('2d'), img = ctx.createImageData(N,N);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const dx = (h[y*N+Math.min(x+1,N-1)] - h[y*N+Math.max(x-1,0)])*forca;
+    const dy = (h[Math.min(y+1,N-1)*N+x] - h[Math.max(y-1,0)*N+x])*forca;
+    const l = Math.hypot(dx,dy,1), i=(y*N+x)*4;
+    img.data[i]=(-dx/l*.5+.5)*255; img.data[i+1]=(-dy/l*.5+.5)*255; img.data[i+2]=(1/l*.5+.5)*255; img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  const t = new THREE.CanvasTexture(cv); t.wrapS=t.wrapT=THREE.RepeatWrapping; return t;
+}
+function texturaMiolo(N){
+  // miolo esbranquiçado + bolhinhas de ar, gravados em cada face.
+  // canal R = transmissão (onde é nuvem, o gelo fica leitoso); canal G = rugosidade
+  const h = ruido(N, 6), cv = document.createElement('canvas'); cv.width=cv.height=N;
+  const ctx = cv.getContext('2d'), img = ctx.createImageData(N,N);
+  const nuvem = new Float32Array(N*N);
+  const cx = entre(.4,.6), cy = entre(.4,.6), ex = entre(.75,1.35);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    const dx=(x/N-cx)*ex, dy=(y/N-cy)/ex, r=Math.hypot(dx,dy)*3.1;
+    const fiapo = Math.min(1, Math.max(0,(h[y*N+x]-.66)*3.2));
+    nuvem[y*N+x] = Math.max(0, 1-r) ** 1.8 * (.15 + .85*fiapo) * .62;
+  }
+  for(let k=0;k<10;k++){            // bolhas
+    const bx = entre(.2,.8)*N, by = entre(.2,.8)*N, br = entre(.7,1.8);
+    for(let y=Math.max(0,by-br-1|0); y<Math.min(N,by+br+2); y++)
+      for(let x=Math.max(0,bx-br-1|0); x<Math.min(N,bx+br+2); x++){
+        const d = Math.hypot(x-bx,y-by); if(d<br) nuvem[y*N+x] = Math.max(nuvem[y*N+x], .9*(1-d/br)**.5);
+      }
+  }
+  for(let i=0;i<N*N;i++){
+    const c = nuvem[i];
+    img.data[i*4]   = (1 - c*.9)*255;
+    img.data[i*4+1] = (.06 + c*.94)*255;
+    img.data[i*4+2] = 0; img.data[i*4+3] = 255;
+  }
+  ctx.putImageData(img,0,0);
+  return new THREE.CanvasTexture(cv);
+}
+
+// ---- fundo pintado (é ele que o gelo refrata)
+function texturaFundo(){
+  const cv = document.createElement('canvas'); cv.width=W; cv.height=H; const c = cv.getContext('2d');
+  let g = c.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#030b28'); g.addColorStop(.45,'#05195a'); g.addColorStop(.8,'#0a3c9c'); g.addColorStop(1,'#0d63d6');
+  c.fillStyle=g; c.fillRect(0,0,W,H);
+  const glow = (x,y,r,cor) => { const rg=c.createRadialGradient(x,y,0,x,y,r); rg.addColorStop(0,cor); rg.addColorStop(1,'rgba(0,0,0,0)'); c.fillStyle=rg; c.fillRect(0,0,W,H); };
+  glow(W/2, story? 365:236, 520, 'rgba(20,110,255,.40)');
+  glow(W/2, H*1.05, W*.9, 'rgba(90,225,255,.85)');
+  glow(W/2, H*1.0, W*.45, 'rgba(225,250,255,.85)');
+  glow(W*.15, H*.95, 360, 'rgba(150,240,255,.55)');
+  glow(W*.86, H*.92, 400, 'rgba(110,205,255,.55)');
+  // luz atrás dos cubos que caem, para o gelo não ficar escuro
+  if(story){ glow(W/2, H*.8, W*.75, 'rgba(90,200,255,.55)'); glow(90, 640, 330, 'rgba(110,210,255,.55)'); glow(1000, 990, 300, 'rgba(110,210,255,.5)'); glow(940, 360, 220, 'rgba(110,210,255,.4)'); }
+  else     { glow(70, 290, 300, 'rgba(110,210,255,.55)'); glow(1010, 600, 260, 'rgba(110,210,255,.5)'); }
+  // feixes de luz diagonais, bem sutis
+  c.save(); c.globalCompositeOperation='lighter';
+  for(const [x,w,a] of [[.18,90,.05],[.36,40,.04],[.62,120,.035],[.82,50,.045]]){
+    const lg=c.createLinearGradient(0,0,0,H); lg.addColorStop(0,`rgba(140,220,255,${a})`); lg.addColorStop(.8,'rgba(140,220,255,0)');
+    c.fillStyle=lg; c.beginPath(); c.moveTo(W*x-w,0); c.lineTo(W*x+w,0); c.lineTo(W*x+w*3+260,H); c.lineTo(W*x+w+260,H); c.fill();
+  }
+  c.restore();
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+// ---- renderer / câmera
+const canvas = document.getElementById('cena');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(1); renderer.setSize(W,H,false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const LARG = 6;                          // largura visível no plano z=0
+const ALT = LARG*H/W;
+const DIST = 16;
+const camera = new THREE.PerspectiveCamera(2*Math.atan(ALT/2/DIST)*180/Math.PI, W/H, .1, 100);
+camera.position.set(0,0,DIST);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), .03).texture;
+scene.environmentIntensity = 0.9;
+
+// plano de fundo exatamente do tamanho do quadro
+const zF = -7, escala = (DIST - zF)/DIST;
+const fundo = new THREE.Mesh(new THREE.PlaneGeometry(LARG*escala, ALT*escala),
+  new THREE.MeshBasicMaterial({map:texturaFundo(), toneMapped:false}));
+fundo.position.z = zF; scene.add(fundo);
+
+// luzes de recorte para os brilhos nas arestas
+const l1 = new THREE.DirectionalLight(0xffffff, 3.2); l1.position.set(-3,6,8); scene.add(l1);
+const l2 = new THREE.DirectionalLight(0x7fe6ff, 2.6); l2.position.set(5,2,-4); scene.add(l2);
+const l3 = new THREE.PointLight(0x9feeff, 40, 12); l3.position.set(0,-ALT/2+1.4,-2.5); scene.add(l3);
+
+// ---- material do gelo
+const normalMap = texturaNormal(512, 6);
+// quatro variações de miolo, para nenhum cubo repetir o outro
+const gelos = Array.from({length:4}, () => {
+  const miolo = texturaMiolo(256);
+  return new THREE.MeshPhysicalMaterial({
+    color:0xffffff, transmission:1, transmissionMap:miolo, thickness:2.2, ior:1.31,
+    roughness:.75, roughnessMap:miolo, metalness:0,
+    attenuationColor:new THREE.Color(0xd6f3ff), attenuationDistance:5,
+    clearcoat:1, clearcoatRoughness:.04, normalMap, normalScale:new THREE.Vector2(.55,.55),
+    clearcoatNormalMap:normalMap, clearcoatNormalScale:new THREE.Vector2(.25,.25),
+    specularIntensity:1, envMapIntensity:1.5, dispersion:.6
+  });
+});
+
+function cubo(x,y,z,s,rot){
+  const geo = new RoundedBoxGeometry(1, 1, 1, 6, .13);
+  const m = new THREE.Mesh(geo, gelos[rnd()*gelos.length|0]);
+  m.scale.set(s*entre(.95,1.05), s*entre(.95,1.05), s*entre(.95,1.05));
+  m.position.set(x,y,z);
+  m.rotation.set(...(rot || [entre(-.6,.6), entre(-.9,.9), entre(-.5,.5)]));
+  scene.add(m);
+  return m;
+}
+
+// ---- monte de gelo junto à base do quadro
+const B = -ALT/2;   // base do quadro no plano z=0
+const monte = [
+  // [x, y acima da base, z, tamanho]
+  [-2.9, .0, .6, .82], [-1.95, -.05, 1.3, .86], [-.95, .0, .9, .84], [.05, -.08, 1.5, .88], [1.05, .0, 1.0, .84], [2.05, -.05, 1.4, .86], [2.95, .05, .5, .8],
+  [-2.45, .62, .1, .8], [-1.45, .7, .5, .82], [-.45, .62, .2, .84], [.6, .7, .4, .82], [1.6, .62, .1, .8], [2.55, .7, -.3, .78],
+  [-1.85, 1.22, -.4, .76], [-.75, 1.28, -.2, .8], [.4, 1.3, -.3, .8], [1.5, 1.2, -.6, .76],
+];
+if(story) monte.push(
+  [-2.3, 1.8, -.9, .74], [-1.2, 1.88, -.8, .76], [-.1, 1.92, -.7, .78], [1.0, 1.86, -.9, .74], [2.1, 1.8, -1.1, .72],
+  [-.7, 2.5, -1.3, .72], [.5, 2.55, -1.4, .7],
+);
+for(const [x,y,z,s] of monte) cubo(x, B + y + .05, z, s);
+
+// cubos "caindo" nas bordas
+if(story){
+  cubo(-2.65, ALT*.2, 1.0, .95, [.5,.7,.3]);
+  cubo(2.75, ALT*-.01, .4, .8, [-.4,.5,-.6]);
+  cubo(2.55, ALT*.36, -1.2, .6, [.9,.2,.4]);
+} else {
+  cubo(-2.75, ALT*.28, 1.0, .9, [.5,.7,.3]);
+  cubo(2.8, ALT*.06, .4, .75, [-.4,.5,-.6]);
+}
+
+await document.fonts.ready;
+renderer.compile(scene, camera);
+renderer.render(scene, camera);
+renderer.render(scene, camera);
+
+// ---- partículas de gelo/brilho no ar
+const bc = document.getElementById('brilhos'); bc.width=W; bc.height=H; const b2 = bc.getContext('2d');
+for(let i=0;i<70;i++){
+  const x = rnd()*W, y = rnd()*H, r = entre(.8,3.2), a = entre(.15,.6);
+  const g = b2.createRadialGradient(x,y,0,x,y,r*3); g.addColorStop(0,`rgba(220,248,255,${a})`); g.addColorStop(1,'rgba(220,248,255,0)');
+  b2.fillStyle=g; b2.beginPath(); b2.arc(x,y,r*3,0,7); b2.fill();
+}
+// ---- brilhos estelares nos pontos mais claros do gelo (achados na própria imagem)
+const amostra = document.createElement('canvas'); amostra.width=W; amostra.height=H;
+const ac = amostra.getContext('2d'); ac.drawImage(canvas,0,0);
+const px = ac.getImageData(0,0,W,H).data;
+const cand = [];
+for(let y=Math.round(H*.55); y<H-20; y+=3) for(let x=20; x<W-20; x+=3){
+  const i=(y*W+x)*4, l=.2126*px[i]+.7152*px[i+1]+.0722*px[i+2];
+  if(l>238) cand.push([l,x,y]);
+}
+cand.sort((a,b)=>b[0]-a[0]);
+const escolhidos = [];
+for(const [,x,y] of cand){ if(escolhidos.every(([a,b])=>Math.hypot(a-x,b-y)>170)) escolhidos.push([x,y]); if(escolhidos.length>=6) break; }
+function estrela(x,y,t){
+  b2.save(); b2.translate(x,y); b2.globalCompositeOperation='lighter';
+  const g=b2.createRadialGradient(0,0,0,0,0,t*.35); g.addColorStop(0,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(160,235,255,0)');
+  b2.fillStyle=g; b2.beginPath(); b2.arc(0,0,t*.35,0,7); b2.fill();
+  for(const [ang,len] of [[0,1],[Math.PI/2,1],[Math.PI/4,.45],[-Math.PI/4,.45]]){
+    b2.save(); b2.rotate(ang);
+    const lg=b2.createLinearGradient(-t*len,0,t*len,0);
+    lg.addColorStop(0,'rgba(200,245,255,0)'); lg.addColorStop(.5,'rgba(255,255,255,.95)'); lg.addColorStop(1,'rgba(200,245,255,0)');
+    b2.fillStyle=lg; b2.beginPath(); b2.moveTo(-t*len,0); b2.lineTo(0,-2); b2.lineTo(t*len,0); b2.lineTo(0,2); b2.fill();
+    b2.restore();
+  }
+  b2.restore();
+}
+escolhidos.forEach(([x,y],k)=>estrela(x,y, k<2? 64 : 40));
+document.documentElement.dataset.pronto = '1';
+} catch(e){ erro(e.stack || e.message); }
+</script>
+</body>
+</html>
