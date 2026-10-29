@@ -9,9 +9,19 @@ cada uma numa notação padrão:
 
 ## Gelo Prime · artes "Seja revendedor"
 
-Duas artes da campanha "Seja um revendedor Gelo Prime! Nós fornecemos o freezer", em feed e story. Saem de um único HTML renderizado pelo Chrome sem janela, num script de PowerShell. Entregues em 01/10/2026.
+Duas artes da campanha "Seja um revendedor Gelo Prime! Nós fornecemos o freezer", em feed e story. Saem de uma única página renderizada pelo Chrome sem janela, num script de PowerShell. Entregues em 01/10/2026.
 
-![Gelo Prime · artes "Seja revendedor"](./gelo-prime.svg)
+### Quem usa e para quê (UML)
+
+![Casos de uso · Gelo Prime · artes "Seja revendedor"](./gelo-prime-1-casos-de-uso.svg)
+
+### Do texto da campanha aos PNGs entregues (BPMN 2.0)
+
+![Processo · Gelo Prime · artes "Seja revendedor"](./gelo-prime-2-processo.svg)
+
+### Arquitetura (C4, containers)
+
+![Arquitetura · Gelo Prime · artes "Seja revendedor"](./gelo-prime-3-arquitetura.svg)
 
 Editável: [`gelo-prime.excalidraw`](./gelo-prime.excalidraw), abre em [excalidraw.com](https://excalidraw.com) ou no VS Code com a extensão Excalidraw.
 
