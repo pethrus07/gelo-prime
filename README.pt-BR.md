@@ -31,4 +31,4 @@ artes/fonte/            o logo da marca (foto de origem e recorte)
 
 ## Licença
 
-Todos os direitos reservados. Logo e marca pertencem ao cliente.
+Todos os direitos reservados. Publicado como portfólio; não licenciado para reuso. Veja o arquivo [LICENSE](LICENSE). O logo e a marca pertencem ao cliente.

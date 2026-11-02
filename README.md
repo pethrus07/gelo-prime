@@ -31,4 +31,4 @@ artes/fonte/            the brand logo (source photo and cut-out)
 
 ## License
 
-All rights reserved. The logo and brand belong to the client.
+All rights reserved. Published as portfolio; not licensed for reuse. See [LICENSE](LICENSE). The logo and brand belong to the client.
