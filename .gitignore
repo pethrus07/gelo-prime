@@ -1,3 +1,7 @@
 node_modules/
 __pycache__/
 .env*
+
+# Saída do artes/render.ps1 (PNG gerado). Regenerar, não versionar.
+artes/*-feed.png
+artes/*-story.png
